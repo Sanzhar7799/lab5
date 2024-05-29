@@ -1,0 +1,122 @@
+Задание 1: Подсчет количества появлений слова в текстовом файле
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+
+int countWordOccurrences(const std::string& filename, const std::string& word) {
+    std::ifstream file(filename);
+    std::string line;
+    int count = 0;
+
+    while (std::getline(file, line)) {
+        std::stringstream ss(line);
+        std::string token;
+        while (ss >> token) {
+            if (token == word) {
+                count++;
+            }
+        }
+    }
+
+    file.close();
+    return count;
+}
+
+int main() {
+    std::string filename = "text.txt";
+    std::string word = "hello";
+    int occurrences = countWordOccurrences(filename, word);
+    std::cout << "Occurrences of word '" << word << "': " << occurrences << std::endl;
+
+    return 0;
+}
+
+Задание 2: Запись и чтение объектов Matrix из текстового и бинарного файла
+
+// Реализуйте класс Matrix и его операции, как в предыдущих примерах
+
+#include <iostream>
+#include <fstream>
+
+int main() {
+    // Запись объектов Matrix в текстовый файл
+    std::ofstream textFile("matrices.txt");
+    if (textFile.is_open()) {
+        // Запись объектов Matrix в текстовый файл
+        Matrix<int> mat1(2, 2);
+        mat1.fillRandom();
+        textFile << mat1 << "\n";
+
+        // Добавление еще объектов Matrix
+        textFile.close();
+    }
+
+    // Чтение объектов Matrix из текстового файла
+    std::ifstream textIn("matrices.txt");
+    if (textIn.is_open()) {
+        Matrix<int> matrixFromFile(2, 2);
+        textIn >> matrixFromFile;
+        std::cout << "Matrix from text file:\n" << matrixFromFile << "\n";
+        textIn.close();
+    }
+
+    // Запись объектов Matrix в бинарный файл
+
+    // Чтение объектов Matrix из бинарного файла
+
+    return 0;
+}
+
+Задание 3: Манипуляции с каталогом книг в текстовом файле
+
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+
+struct Book {
+    std::string id;
+    std::string author;
+    std::string title;
+    int pages;
+};
+
+void addBook(const std::string& filename, const Book& book) {
+    std::ofstream file(filename, std::ios::app);
+    file << book.id << " " << book.author << " " << book.title << " " << book.pages << "\n";
+    file.close();
+}
+
+int main() {
+    std::vector<Book> books;
+
+    // Добавление новой записи
+    Book newBook = {"0003", "J.R.R. Tolkien", "The Lord of the Rings", 1178};
+    addBook("books.txt", newBook);
+
+    // Просмотр всех записей
+    std::ifstream file("books.txt");
+    std::string line;
+    while (std::getline(file, line)) {
+        std::stringstream ss(line);
+        Book book;
+        ss >> book.id >> book.author >> book.title >> book.pages;
+        books.push_back(book);
+    }
+    file.close();
+
+    // Вывод всех записей
+    for (const auto& book : books) {
+        std::cout << "ID: " << book.id << ", Author: " << book.author << ", Title: " << book.title << ", Pages: " << book.pages << std::endl;
+    }
+
+    // Удаление записи
+
+    // Поиск записи
+
+    // Редактирование записи
+
+    return 0;
+}
